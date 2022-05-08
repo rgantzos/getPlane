@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>getPlane</title>
+  </head>
+  <body>
+    <h5>Click Anywhere to getPlane</h5>
+    <br>
+    <h1 data-shadow='getPlane'>getPlane</h1>
+  </body>
+  <script>
+
+    document.body.onclick = function() {
+      getStarted()
+    }
+
+    function getStarted() {
+      window.location.href = 'https://getplane.gantzos.com#input'
+      document.body.onclick = function() {
+        
+      }
+      document.querySelector('h5').remove()
+      document.querySelector('h1').remove()
+      
+      var dep = document.createElement('input')
+      dep.className = 'one'
+      dep.placeholder = 'Departure Airport'
+      document.body.appendChild(dep)
+      document.body.appendChild(document.createElement('br'))
+      var arr = document.createElement('input')
+      arr.placeholder = 'Arrival Airport'
+      arr.className = 'two'
+      document.body.appendChild(arr)
+      document.body.appendChild(document.createElement('br'))
+      var flight = document.createElement('input')
+      flight.placeholder = 'Flight #'
+      flight.className = 'three'
+      document.body.appendChild(flight)
+
+      document.body.appendChild(document.createElement('br'))
+      var btn = document.createElement('button')
+      btn.textContent = 'Search'
+      btn.className = 'four'
+      btn.onclick = function() {
+        var apple = doStuff(document.querySelectorAll('input'))
+        console.log(apple)
+      }
+      document.body.appendChild(btn)
+    }
+
+    async function doStuff(airports) {
+      console.log(airports)
+    var flights = []
+    var response = await fetch('https://api.gantzos.com/aircraft')
+    var data = await response.json()
+    Object.keys(data['response']).forEach(function(el) {
+        if (data['response'][el]['dep_iata'] === airports[0].value.toUpperCase()) {
+            if (data['response'][el]['arr_iata'] === airports[1].value.toUpperCase()) {
+                console.log(data['response'][el]['flight_number'])
+                if (data['response'][el]['flight_number'] === airports[2].value) {
+            flights.push(data['response'][el])
+                console.log(data['response'][el])
+                }
+            }
+        }
+    })
+    if (flights.length === 1) {
+        var plural = 'plane'
+        var plural2 = 'is'
+    } else {
+        var plural = 'planes'
+        var plural2 = 'are'
+    }
+    document.body.childNodes.forEach(function(el) {
+      el.remove()
+    })
+      var div = document.createElement('div')
+      var h1 = document.createElement('h4')
+      var h2 = document.createElement('h4')
+      var h3 = document.createElement('h4')
+      var h4 = document.createElement('h4')
+      h1.textContent = `Aircraft Type: ${flights[0]['aircraft_icao']}`
+      h2.textContent = `Airline: ${flights[0]['airline_icao']}`
+      h3.textContent = `Tail Number: ${flights[0]['reg_number']}`
+      h4.textContent = `Location: ${flights[0]['lat']}, ${flights[0]['lng']}`
+      h1.className = 'one'
+      h2.className = 'two'
+      h3.className = 'three'
+      h4.className = 'four'
+      div.appendChild(h1)
+      div.appendChild(h2)
+      div.appendChild(h3)
+      div.appendChild(h4)
+      document.body.appendChild(div)
+}
+    
+  </script>
+  <style>
+
+    @import url('https://fonts.googleapis.com/css?family=Righteous');
+
+    input {
+      font-family: Righteous;
+      padding: 1vw;
+      border-radius: 1vw;
+      border: 0px;
+      outline: none;
+      color: hsla(230,40%,50%,1);
+      margin: 1vh;
+      font-size: 1vw;
+      width: 15vw;
+      height: 5vh;
+    }
+
+    button {
+      font-family: Righteous;
+      padding: 1vw;
+      border-radius: 1vw;
+      border: 0px;
+      outline: none;
+      color: hsla(230,40%,50%,1);
+      margin: 1vh;
+      font-size: 1vw;
+      width: 15vw;
+      height: 7vh;
+      cursor: pointer;
+    }
+
+    .one {
+      positon: fixed;
+      top: -64vh;
+    }
+
+    .two {
+      positon: fixed;
+      top: -62vh;
+    }
+
+    .three {
+      positon: fixed;
+      top: -60vh;
+    }
+
+    .four {
+      positon: fixed;
+      top: -58vh;
+    }
+
+*, *:before, *:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
+  }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-familyL Righteous;
+  }
+  body {
+    text-align: center;
+    background-color: hsla(230,40%,50%,1);
+    }
+  body:before {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 0;
+    height: 100%;
+    }
+
+    h4 {
+      font-family: 'Righteous', serif;
+      color: white;
+      font-size: 3vw;
+    }
+
+h1 {
+  vertical-align: middle;
+  font-size: 10vw;
+  display: inline-block;
+  color: white;
+  font-family: 'Righteous', serif;
+  text-shadow: .03em .03em 0 hsla(230,40%,50%,1);
+  position: fixed;
+  height: 40vh;
+  top: 35vh;
+  left: 30vw;
+  width: 40vw;
+  }
+
+    h5 {
+  font-size: 1vw;
+  display: inline-block;
+  color: white;
+  font-family: 'Righteous', serif;
+  text-shadow: .03em .03em 0 hsla(230,40%,50%,1);
+      position: fixed;
+      bottom: 5vh;
+      left: 40vw;
+      width: 20vw;
+  }
+  h1:after {
+    content: attr(data-shadow);
+    position: absolute;
+    top: .06em; left: .06em;
+    z-index: -1;
+    text-shadow: none;
+    background-image:
+      linear-gradient(
+        45deg,
+        transparent 45%,
+        hsla(48,20%,90%,1) 45%,
+        hsla(48,20%,90%,1) 55%,
+        transparent 0
+        );
+    background-size: .05em .05em;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  
+    animation: shad-anim 15s linear infinite;
+    }
+
+@keyframes shad-anim {
+  0% {background-position: 0 0}
+  0% {background-position: 100% -100%}
+  }
+    
+  </style>
+  <script>
+
+
+    
+  </script>
+</html>
